@@ -18,7 +18,7 @@ See [webpack-dev-middleware](https://github.com/webpack/webpack-dev-middleware) 
 You can use the plugin in two ways.
 
 
-1) With object as options
+**1) With object as options**
 ```js
 /**
  * file: index.js
@@ -70,7 +70,7 @@ error => {
 });
 ```
 
-1) With absolute path as options
+**2) With absolute path as options**
 ```js
 /**
  * file: index.js
