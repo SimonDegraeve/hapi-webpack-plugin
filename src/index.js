@@ -2,7 +2,7 @@
  * Import dependencies
  */
 import {version} from '../package.json';
-import PathIsAbsolute from 'path-is-absolute';
+import Path from 'path';
 import Webpack from 'webpack';
 import WebpackDevMiddleware from 'webpack-dev-middleware';
 import WebpackHotMiddleware from 'webpack-hot-middleware';
@@ -18,15 +18,13 @@ function register(server, options, next) {
 
   // Require config from path
   if (typeof options === 'string') {
-    if (!PathIsAbsolute(options)) {
-      throw new Error(`Path to configuration file must be absolute (${options}).`);
-    }
+    const configPath = Path.resolve(process.cwd(), options);
     try {
-      config = require(options);
+      config = require(configPath);
       compiler = new Webpack(config);
     }
     catch (error) {
-      throw new Error(`Path to configuration file is invalid (${options}).`);
+      throw new Error(`Path to configuration file is invalid (${configPath}).`);
     }
   }
   else {

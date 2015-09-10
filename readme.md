@@ -70,7 +70,7 @@ error => {
 });
 ```
 
-**2) With absolute path as options**
+**2) With path as options**
 ```js
 /**
  * file: index.js
@@ -81,7 +81,6 @@ error => {
  */
 import {Server} from 'hapi';
 import WebpackPlugin from 'hapi-webpack-plugin';
-import Path from 'path';
 
 
 /**
@@ -95,7 +94,7 @@ server.connection({port: 3000});
  */
 server.register({
   register: WebpackPlugin,
-  options: Path.join(__dirname, './webpack.config.js')
+  options: './webpack.config.js'
 },
 error => {
   if (error) {
