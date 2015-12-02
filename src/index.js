@@ -19,13 +19,8 @@ function register(server, options, next) {
   // Require config from path
   if (typeof options === 'string') {
     const configPath = Path.resolve(process.cwd(), options);
-    try {
-      config = require(configPath);
-      compiler = new Webpack(config);
-    }
-    catch (error) {
-      throw new Error(`Path to configuration file is invalid (${configPath}).`);
-    }
+    config = require(configPath);
+    compiler = new Webpack(config);
   }
   else {
     config = options;
