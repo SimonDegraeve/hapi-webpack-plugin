@@ -31,27 +31,27 @@ function register(server, options, next) {
   const webpackDevMiddleware = WebpackDevMiddleware(compiler, config.assets);
   const webpackHotMiddleware = WebpackHotMiddleware(compiler, config.hot);
 
-  // Handle webpackDevMiddleware
-  server.ext('onRequest', (request, reply) => {
+  // Handle webpack middlware
+  var webpackMiddlewareHandler =  (request, reply) => {
     const {req, res} = request.raw;
+
+    // Handle webpackDevMiddleware
     webpackDevMiddleware(req, res, error => {
       if (error) {
         return reply(error);
       }
-      reply.continue();
+      // Handle webpackHotMiddleware
+      webpackHotMiddleware(req, res, error => {
+        if (error) {
+          return reply(error);
+        }
+        reply.continue();
+      });
     });
-  });
+  };
 
-  // Handle webpackHotMiddleware
-  server.ext('onRequest', (request, reply) => {
-    const {req, res} = request.raw;
-    webpackHotMiddleware(req, res, error => {
-      if (error) {
-        return reply(error);
-      }
-      reply.continue();
-    });
-  });
+  // catch all route handler (which respects vhost passed into plugin)
+  server.route({ method: '*', path: '/{p*}', handler: webpackMiddlewareHandler });
 
   // Expose compiler
   server.expose({compiler});
@@ -66,7 +66,9 @@ function register(server, options, next) {
  */
 register.attributes = {
   name: 'webpack',
-  version
+  multiple: true,
+  version,
+
 };
 
 
