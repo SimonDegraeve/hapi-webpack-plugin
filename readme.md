@@ -5,6 +5,15 @@
 
 [Webpack](http://webpack.github.io) middleware for [Hapi](https://github.com/hapijs/hapi). Supports HMR.
 
+
+
+## Webpack Version
+
+Please download the appropriate version for you. 
+
+* For **webpack 1.x** use version < 1.3.0 of this package.
+* For **webpack 2.x** use version >= 2.0.0 of this package.
+
 ## Installation
 
 ```js
