@@ -1,17 +1,15 @@
 /**
  * Import dependencies
  */
-import {version} from '../package.json';
+import 'babel-polyfill';
+import Pack from '../package.json';
 import Path from 'path';
 import Webpack from 'webpack';
 import WebpackDevMiddleware from 'webpack-dev-middleware';
 import WebpackHotMiddleware from 'webpack-hot-middleware';
 
+function register(server, options) {
 
-/**
- * Define plugin
- */
-function register(server, options, next) {
   // Define variables
   let config = {};
   let compiler;
@@ -32,46 +30,55 @@ function register(server, options, next) {
   const webpackHotMiddleware = WebpackHotMiddleware(compiler, config.hot);
 
   // Handle webpackDevMiddleware
-  server.ext('onRequest', (request, reply) => {
-    const {req, res} = request.raw;
-    webpackDevMiddleware(req, res, error => {
-      if (error) {
-        return reply(error);
+  server.ext({
+    type: 'onRequest',
+    method: async (request, h) => {
+      const { req, res } = request.raw;
+      try {
+        let setupWebpackDevMiddleware = new Promise((resolve, reject) => {
+          webpackDevMiddleware(req, res, error => {
+            if(error) reject(error);
+            resolve();
+          });
+        });
+
+        await setupWebpackDevMiddleware;
+        return h.continue;
       }
-      reply.continue();
-    });
+      catch (err) {
+        throw err;
+      }
+    }
   });
 
   // Handle webpackHotMiddleware
-  server.ext('onRequest', (request, reply) => {
-    const {req, res} = request.raw;
-    webpackHotMiddleware(req, res, error => {
-      if (error) {
-        return reply(error);
+  server.ext({
+    type: 'onRequest',
+    method: async (request, h) => {
+      const { req, res } = request.raw;
+      try {
+        let setupWebpackHotMiddleware = new Promise((resolve, reject) => {
+          webpackHotMiddleware(req, res, error => {
+            if(error) reject(error);
+            resolve();
+          });
+        });
+
+        await setupWebpackHotMiddleware;
+        return h.continue;
       }
-      reply.continue();
-    });
+      catch (err) {
+        throw err;
+      }
+    }
   });
 
   // Expose compiler
-  server.expose({compiler});
-
-  // Done
-  return next();
+  server.expose({ compiler });
 }
 
-
-/**
- * Define plugin attributes
- */
-register.attributes = {
-  name: 'webpack',
-  version
+exports.plugin = {
+  pkg: Pack,
+  once: true,
+  register
 };
-
-
-/**
- * Export plugin
- */
-export default register;
-

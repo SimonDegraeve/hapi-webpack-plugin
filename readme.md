@@ -11,8 +11,12 @@
 
 Please download the appropriate version for you. 
 
+### **Hapi >= 17.x**
+* For **webpack >= 2.x** use version >= 3.0.0 of this package.
+
+### **Hapi <= 16.x**
 * For **webpack 1.x** use version < 1.3.0 of this package.
-* For **webpack 2.x** use version >= 2.0.0 of this package.
+* For **webpack 2.x** use version 2.x.x of this package.
 
 ## Installation
 
@@ -28,6 +32,69 @@ You can use the plugin in two ways.
 
 
 **1) With object as options**
+## **Hapi >= 17.x**
+```js
+/**
+ * file: index.js
+ */
+
+/**
+ * Import dependencies
+ */
+import {Server} from 'hapi';
+import Webpack from 'webpack';
+import WebpackPlugin from 'hapi-webpack-plugin';
+
+/**
+ * Create server
+ */
+const server = new Server({port: 3000});
+
+/**
+ * Define constants
+ */
+const compiler = new Webpack({
+  // webpack configuration
+  entry: 'app.js'
+});
+
+const assets = {
+  // webpack-dev-middleware options
+  // See https://github.com/webpack/webpack-dev-middleware
+}
+
+const hot = {
+  // webpack-hot-middleware options
+  // See https://github.com/glenjamin/webpack-hot-middleware
+}
+
+/**
+ * Register plugin and start server
+ */
+async function start() {
+  try {
+    await server.register({
+      plugin: WebpackPlugin,
+      options: {compiler, assets, hot}
+    });
+  }
+  catch (error) {
+    console.error(error);
+  }
+  
+  try {
+    server.start();
+    console.log('Server running at:', server.info.uri)
+  }
+  catch (error) {
+    console.error(error);
+  }
+}
+
+start();
+```
+
+## **Hapi <= 16.x**
 ```js
 /**
  * file: index.js
@@ -80,6 +147,51 @@ error => {
 ```
 
 **2) With path as options**
+## **Hapi >= 17**
+```js
+/**
+ * file: index.js
+ */
+
+/**
+ * Import dependencies
+ */
+import {Server} from 'hapi';
+import WebpackPlugin from 'hapi-webpack-plugin';
+
+
+/**
+ * Create server
+ */
+const server = new Server({port: 3000});
+
+/**
+ * Register plugin and start server
+ */
+async function start() {
+  try {
+    await server.register({
+      plugin: WebpackPlugin,
+      options: './webpack.config.js'
+    });
+  }
+  catch (error) {
+    console.error(error);
+  }
+  
+  try {
+    server.start();
+    console.log('Server running at:', server.info.uri)
+  }
+  catch (error) {
+    console.error(error);
+  }
+}
+
+start();
+```
+
+## **Hapi <= 16.x**
 ```js
 /**
  * file: index.js
