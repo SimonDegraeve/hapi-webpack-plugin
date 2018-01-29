@@ -1,6 +1,6 @@
 {
   "name": "hapi-webpack-plugin",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Webpack middleware for Hapi. Supports HMR.",
   "homepage": "https://github.com/SimonDegraeve/hapi-webpack-plugin",
   "main": "./lib/index.js",
@@ -25,14 +25,16 @@
     "url": "https://github.com/SimonDegraeve/hapi-webpack-plugin/issues"
   },
   "dependencies": {
-    "webpack": "^2.2.0",
-    "webpack-dev-middleware": "^1.10.1",
-    "webpack-hot-middleware": "^2.17.1"
+    "webpack": "^3.10.0",
+    "webpack-dev-middleware": "^2.0.1",
+    "webpack-hot-middleware": "^2.21.0"
   },
   "devDependencies": {
-    "babel": "^5.8.33",
-    "babel-eslint": "^4.1.6",
-    "eslint": "^1.10.3",
-    "eslint-plugin-babel": "^3.0.0"
+    "babel-cli": "^6.26.0",
+    "babel-eslint": "^8.0.3",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "eslint": "^4.12.1",
+    "eslint-plugin-babel": "^4.1.2"
   }
 }
