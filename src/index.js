@@ -1,7 +1,7 @@
 /**
  * Import dependencies
  */
-import 'babel-polyfill';
+import '@babel/polyfill';
 import Pack from '../package.json';
 import Path from 'path';
 import Webpack from 'webpack';
