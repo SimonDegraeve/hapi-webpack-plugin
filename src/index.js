@@ -18,7 +18,7 @@ function register(server, options) {
   if (typeof options === 'string') {
     const configPath = Path.resolve(process.cwd(), options);
     config = require(configPath);
-    compiler = new Webpack(config);
+    compiler = Webpack(config);
   }
   else {
     config = options;
